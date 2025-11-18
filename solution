@@ -1,0 +1,84 @@
+// Function for number detection 
+bool isNumber(const std::string& token) {
+    try {
+        std::stoi(token);
+        return true;
+    }
+    catch (const std::exception&) {
+        return false;
+    }
+}
+
+// Function for operation detection 
+bool isOperation(string token) {
+    if (token == "+") {
+        return true;
+    }
+    else if (token == "-") {
+        return true;
+    }
+    else if (token == "*") {
+        return true;
+    }
+    else if (token == "/") {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// Function for using operation 
+int runOperation(string token, int arg1, int arg2) {
+    if (token == "+") {
+        return arg1 + arg2;
+    }
+    else if (token == "-") {
+        return arg1 - arg2;
+    }
+    else if (token == "*") {
+        return arg1 * arg2;
+    }
+    else if (token == "/") {
+        return arg1 / arg2;
+    }
+    else {
+        return 0;
+    }
+}
+
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+
+        // Stack of arguments
+        stack<int> arguments;
+
+        // Iterating through each token
+        for (const string& token : tokens) {
+
+            // Number token case
+            if (isNumber(token)) {
+                int argument = stoi(token);   // Convert string to int
+                arguments.push(argument);     // Push argument onto the stack
+            }
+
+            // Operation token case
+            else if (isOperation(token)) {
+
+                // Getting and removing last 2 arguments
+                int arg2 = arguments.top(); arguments.pop();
+                int arg1 = arguments.top(); arguments.pop();
+
+                // Calculating operation result
+                int result = runOperation(token, arg1, arg2);
+
+                // Pushing result onto the stack
+                arguments.push(result);
+            }
+        }
+
+        // Returning the final result
+        return arguments.top();
+    }
+};
